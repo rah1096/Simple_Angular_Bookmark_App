@@ -1,7 +1,19 @@
 angular.module('Eggly', [
-
+    'ui.router',
+    'categories',
+    'categories.bookmarks'
 ])
-.controller('MainCtrl', function($scope) {
+    .config(function($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state('eggly', {
+                url: '',
+                abstract: true
+            })
+        ;
+
+        $urlRouterProvider.otherwise('/');
+    })
+    .controller('MainCtrl', function($scope) {
         $scope.categories = [
             {"id": 0, "name": "Development"},
             {"id": 1, "name": "Design"},
@@ -47,49 +59,49 @@ angular.module('Eggly', [
     //    CRUD    //
 
 
-    function createBookmark(bookmark) {
-      bookmark.id = $scope.bookmarks.length;
-      $scope.bookmarks.push(bookmark);
+        function createBookmark(bookmark) {
+            bookmark.id = $scope.bookmarks.length;
+            $scope.bookmarks.push(bookmark);
 
-      resetCreateForm();
-    }
+            resetCreateForm();
+        }
 
 
-    $scope.createBookmark = createBookmark;
-
-    $scope.editedBookmark = null;
-
-    function setEditedBookmark(bookmark) {
-        $scope.editedBookmark = angular.copy(bookmark);
-    }
-
-    function updateBookmark(bookmark) {
-        var index = _.findIndex($scope.bookmarks, function(b) {
-           return b.id == bookmark.id;
-        });
-        $scope.bookmarks[index] = bookmark;
+        $scope.createBookmark = createBookmark;
 
         $scope.editedBookmark = null;
-        $scope.isEditing = false;
-    }
 
-    function isSelectedBookmark(bookmarkId) {
-        return $scope.editedBookmark !== null && $scope.editedBookmark.id === bookmarkId;
-    }
+        function setEditedBookmark(bookmark) {
+            $scope.editedBookmark = angular.copy(bookmark);
+        }
 
-    $scope.setEditedBookmark = setEditedBookmark;
-    $scope.updateBookmark = updateBookmark;
-    $scope.isSelectedBookmark = isSelectedBookmark;
+        function updateBookmark(bookmark) {
+            var index = _.findIndex($scope.bookmarks, function(b) {
+               return b.id == bookmark.id;
+            });
+            $scope.bookmarks[index] = bookmark;
 
-    function deleteBookmark(bookmark) {
-        _.remove($scope.bookmarks, function(b) {
-            return b.id == bookmark.id;
-        });
-    }
+            $scope.editedBookmark = null;
+            $scope.isEditing = false;
+        }
 
-    $scope.deleteBookmark = deleteBookmark;
+        function isSelectedBookmark(bookmarkId) {
+            return $scope.editedBookmark !== null && $scope.editedBookmark.id === bookmarkId;
+        }
 
-    //    Start create and edit   //
+        $scope.setEditedBookmark = setEditedBookmark;
+        $scope.updateBookmark = updateBookmark;
+        $scope.isSelectedBookmark = isSelectedBookmark;
+
+        function deleteBookmark(bookmark) {
+            _.remove($scope.bookmarks, function(b) {
+                return b.id == bookmark.id;
+            });
+        }
+
+        $scope.deleteBookmark = deleteBookmark;
+
+        //    Start create and edit   //
 
         $scope.isCreating = false;
         $scope.isEditing = false;
