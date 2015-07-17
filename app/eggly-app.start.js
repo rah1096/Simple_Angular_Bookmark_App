@@ -13,7 +13,7 @@ angular.module('Eggly', [
 
         $urlRouterProvider.otherwise('/');
     })
-    .controller('MainCtrl', function($scope) {
+    .controller('MainCtrl', function($scope, $state) {
         $scope.categories = [
             {"id": 0, "name": "Development"},
             {"id": 1, "name": "Design"},
@@ -32,27 +32,45 @@ angular.module('Eggly', [
           {"id": 8, "title": "Dump", "url": "http://dump.com", "category": "Humor" }
         ];
 
+
+
+        $scope.isCreating = false;
+        $scope.isEditing = false;
         $scope.currentCategory = null;
+        $scope.editedBookmark = null;
+
+        function isCurrentCategory(category) {
+            return $scope.currentCategory !== null && category.name === $scope.currentCategory.name;
+        }
 
         function setCurrentCategory(category) {
             $scope.currentCategory = category;
+
+            $state.go('eggly.categories.bookmarks', {category:category.name});
 
             cancelCreating();
             cancelEditing();
         }
 
-        function isCurrentCategory(category) {
-            return $scope.currentCategory != null && category.name === $scope.currentCategory.name;
-        }
-
         $scope.isCurrentCategory = isCurrentCategory;
         $scope.setCurrentCategory = setCurrentCategory;
+
+        function setEditedBookmark(bookmark) {
+            $scope.editedBookmark = angular.copy(bookmark);
+        }
+
+        function isSelectedBookmark(bookmarkId) {
+            return $scope.editedBookmark !== null && $scope.editedBookmark.id === bookmarkId;
+        }
+
+        $scope.setEditedBookmark = setEditedBookmark;
+        $scope.isSelectedBookmark = isSelectedBookmark;
 
         function resetCreateForm() {
             $scope.newBookmark = {
                 title: '',
                 url: '',
-                category: $scope.currentCategory.name
+                category: $scope.currentCategory
             };
         }
 

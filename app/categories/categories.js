@@ -1,7 +1,7 @@
 angular.module('categories', [
     'eggly.models.categories'
 ])
-    .config(function($stateProvider) {
+    .config(function($stateProvider){
         $stateProvider
             .state('eggly.categories', {
                 url: '/',
@@ -15,14 +15,10 @@ angular.module('categories', [
                         templateUrl: 'app/categories/bookmarks/bookmarks.tmpl.html'
                     }
                 }
-
             })
+        ;
     })
-    .controller('CategoriesCtrl', function($scope) {
-
-    })
-    .controller('BookmarksCtrl', function($scope) {
+    .controller('CategoriesCtrl', function CategoriesCtrl($scope){
 
     })
 ;
-
