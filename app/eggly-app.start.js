@@ -24,6 +24,9 @@ angular.module('Eggly', [
 
         function setCurrentCategory(category) {
             $scope.currentCategory = category;
+
+            cancelCreating();
+            cancelEditing();
         }
 
         function isCurrentCategory(category) {
@@ -32,5 +35,66 @@ angular.module('Eggly', [
 
         $scope.isCurrentCategory = isCurrentCategory;
         $scope.setCurrentCategory = setCurrentCategory;
+
+        function resetCreateForm() {
+            $scope.newBookmark = {
+                title: '',
+                url: '',
+                category: $scope.currentCategory.name
+            };
+        }
+
+    //    CRUD    //
+
+
+    function createBookmark(bookmark) {
+      bookmark.id = $scope.bookmarks.length;
+      $scope.bookmarks.push(bookmark);
+
+      resetCreateForm();
+    }
+
+
+    $scope.createBookmark = createBookmark;
+
+    //    Start create and edit   //
+
+        $scope.isCreating = false;
+        $scope.isEditing = false;
+
+        function startCreating() {
+            $scope.isCreating = true;
+            $scope.isEditing = false;
+
+            resetCreateForm();
+        }
+
+        function cancelCreating() {
+            $scope.isCreating = false;
+        }
+
+        function startEditing() {
+            $scope.isEditing = true;
+            $scope.isCreating = false;
+        }
+
+        function cancelEditing() {
+            $scope.isEditing = false;
+        }
+
+        function shouldShowCreating() {
+            return $scope.currentCategory && !$scope.isEditing;
+        }
+
+        function shouldShowEditing() {
+            return $scope.currentCategory && !$scope.isCreating;
+        }
+
+        $scope.startCreating = startCreating;
+        $scope.cancelCreating = cancelCreating;
+        $scope.startEditing = startEditing;
+        $scope.cancelEditing = cancelEditing;
+        $scope.shouldShowCreating = shouldShowCreating;
+        $scope.shouldShowEditing = shouldShowEditing;
     })
 ;
