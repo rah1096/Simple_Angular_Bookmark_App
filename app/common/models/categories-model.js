@@ -1,12 +1,11 @@
 angular.module('eggly.models.categories', [
 
 ])
-    .service('CategoriesModel', function($http, $q) {
+    .service('CategoriesModel', function ($http, $q) {
         var model = this,
             URLS = {
                 FETCH: 'data/categories.json'
             },
-
             categories,
             currentCategory;
 
@@ -16,32 +15,31 @@ angular.module('eggly.models.categories', [
 
         function cacheCategories(result) {
             categories = extract(result);
-                return categories;
+            return categories;
         }
 
-        model.getCategories = function () {
+        model.getCategories = function() {
             return (categories) ? $q.when(categories) : $http.get(URLS.FETCH).then(cacheCategories);
         };
 
-        model.setCurrentCategory = function(categoryName){
-            return model.getCategoryByName(categoryName)
-                .then(function(category){
-                    currentCategory = category;
-                })
+        model.setCurrentCategory = function(category) {
+            return model.getCategoryByName(category).then(function(category) {
+                currentCategory = category;
+            })
         };
 
-        model.getCurrentCategory = function(){
+        model.getCurrentCategory = function() {
             return currentCategory;
         };
 
-        model.getCurrentCategoryName = function(){
+        model.getCurrentCategoryName = function() {
             return currentCategory ? currentCategory.name : '';
         };
 
         model.getCategoryByName = function(categoryName) {
             var deferred = $q.defer();
 
-            function findCategory() {
+            function findCategory(){
                 return _.find(categories, function(c){
                     return c.name == categoryName;
                 })
@@ -51,12 +49,14 @@ angular.module('eggly.models.categories', [
                 deferred.resolve(findCategory());
             } else {
                 model.getCategories()
-                    .then(function(result){
+                    .then(function() {
                         deferred.resolve(findCategory());
-                    })
+                    });
             }
 
             return deferred.promise;
-        }
+        };
+
+
     })
 ;

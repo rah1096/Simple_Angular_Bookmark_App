@@ -4,7 +4,7 @@ angular.module('categories.bookmarks', [
     'eggly.models.categories',
     'eggly.models.bookmarks'
 ])
-    .config(function($stateProvider){
+    .config(function ($stateProvider) {
         $stateProvider
             .state('eggly.categories.bookmarks', {
                 url: 'categories/:category',
@@ -17,19 +17,19 @@ angular.module('categories.bookmarks', [
             })
         ;
     })
-    .controller('BookmarksListCtrl', function ($stateParams, BookmarksModel, CategoriesModel ) {
+    .controller('BookmarksListCtrl', function ($stateParams, CategoriesModel, BookmarksModel) {
         var bookmarksListCtrl = this;
 
         CategoriesModel.setCurrentCategory($stateParams.category);
 
-
         BookmarksModel.getBookmarks()
-            .then(function(bookmarks) {
+            .then(function (bookmarks) {
                 bookmarksListCtrl.bookmarks = bookmarks;
             });
 
-        bookmarksListCtrl.getcurrentCategory = CategoriesModel.getCurrentCategory;
+        bookmarksListCtrl.getCurrentCategory = CategoriesModel.getCurrentCategory;
         bookmarksListCtrl.getCurrentCategoryName = CategoriesModel.getCurrentCategoryName;
-
+        bookmarksListCtrl.deleteBookmark = BookmarksModel.deleteBookmark;
     })
+
 ;
